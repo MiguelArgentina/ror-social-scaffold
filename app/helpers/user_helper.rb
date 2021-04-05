@@ -1,7 +1,4 @@
 module UserHelper
-  def add_friend
-    Friendship.new(user: current_user.id, friend: @user.id)
-  end
 
   def create_friendship(friend_id)
     user = User.find_by('id = ?', current_user.id)

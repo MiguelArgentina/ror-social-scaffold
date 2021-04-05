@@ -1,5 +1,6 @@
 <section class="user-section">
   <h2>
+
     <%= "Name: #{@user.name}" %>
   </h2>
 
@@ -26,8 +27,8 @@
         <div class="card-body">
           <h6 class="card-title fw-bold">Requested from:</h6>
           <p class="card-text"><%= request.name %> &bull; <%= request.email %></p>
-          <%= link_to 'Accept Request', '#', class: "btn btn-info" %>
-          <%= link_to 'Reject Request', '#', class: "btn btn-warning" %>
+          <%= link_to 'Accept Request', users_path(@user, friend_id: @user.id, confirm: true), class: "btn btn-info" %>
+          <%= link_to 'Reject Request', users_path(@user, friend_id: @user.id, confirm: false), class: "btn btn-warning" %>
         </div>
       <% end %>
     </div>
