@@ -1,16 +1,14 @@
 <section class="user-section">
   <h2>
     <%= "Name: #{@user.name}" %>
-
-    <% if !friend?(@user) && other_user?(@user) %>
-      &nbsp;|&nbsp;
-    <span class="profile-link">
-      <%= link_to 'Add friend',  user_path(@user, friend_id: @user.id), class: 'profile-link' %>
-    </span>
-    <% end %>
   </h2>
 
-
+  <% if a_requested(@user) %>
+      <p>This user sent a friend request</p>
+      <%= link_to 'Actions',  user_path(current_user), class: 'action btn btn-warning' %>
+  <% elsif who_to_add(@user) && not_pending(@user) %>
+      <%= link_to 'Invite to friendship',  user_path(@user, friend_id: @user.id), class: 'action btn btn-secondary' %>
+  <% end %>
 
   <article class="timeline">
     <h3>Recent posts:</h3>
@@ -18,4 +16,32 @@
       <%= render @posts %>
     </ul>
   </article>
+
+  <% if my_profile(@user) %>
+    <div class="card mb-3">
+      <h5 class="card-header">
+        Pending friendship invitations: <%= all_requests %>
+      </h5>
+      <% current_user.friend_requests.each do |request| %>
+        <div class="card-body">
+          <h6 class="card-title fw-bold">Requested from:</h6>
+          <p class="card-text"><%= request.name %> &bull; <%= request.email %></p>
+          <%= link_to 'Accept Request', '#', class: "btn btn-info" %>
+          <%= link_to 'Reject Request', '#', class: "btn btn-warning" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="card">
+      <h5 class="card-header">
+        My Friends: <%= all_friends %>
+      </h5>
+      <% current_user.friends.each do |friend| %>
+        <div class="card-body">
+          <h6 class="card-title fw-bold">Name</h6>
+          <p class="card-text"><%= friend.name %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end%>
 </section>

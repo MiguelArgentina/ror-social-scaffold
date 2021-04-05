@@ -1,17 +1,6 @@
 module UserHelper
-
   def add_friend
-    friendship = Friendship.new(user: current_user.id, friend: @user.id)
-  end
-
-  def friend?(user)
-    return true if Friendship.find_by(friend: user.id).present?
-
-    false
-  end
-
-  def other_user?(user)
-    return true if user.id != current_user.id
+    Friendship.new(user: current_user.id, friend: @user.id)
   end
 
   def create_friendship(friend_id)
@@ -20,4 +9,27 @@ module UserHelper
     Friendship.create(user: user, friend: friend) unless friend_id.nil?
   end
 
+  def who_to_add(user)
+    user.id != current_user.id and !current_user.friends.include?(user)
+  end
+
+  def not_pending(user)
+    !current_user.pending_friends.include?(user)
+  end
+
+  def my_profile(user)
+    current_user.name == user.name
+  end
+
+  def a_requested(user)
+    current_user.friend_requests.include?(user)
+  end
+
+  def all_requests
+    current_user.friend_requests.count
+  end
+
+  def all_friends
+    current_user.friends.count
+  end
 end
