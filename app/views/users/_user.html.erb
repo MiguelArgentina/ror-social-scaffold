@@ -1,13 +1,16 @@
-<li>
-  Name: <%= user.name %>
-  <span class="profile-link">
+
+<li class='d-flex align-items-center'>
+  <%= gravatar_for user %>
+  Name: <%= user.name %><br>
+
+  <span class="ms-2 mb-0 profile-link">
     &nbsp;
     <%= link_to 'See Profile', user_path(user), class: 'profile-link' %>
 
     <% unless a_rejected(user) %>
       <% if a_requested(user) %>
-          &nbsp;|&nbsp; <%= link_to 'Accept friend request',  users_path(user, friend_id: user.id, confirm: true), class: 'profile-link' %>
-          &nbsp;|&nbsp; <%= link_to 'Reject friend request',  users_path(user, friend_id: user.id, confirm: false), class: 'profile-link' %>
+          &nbsp;|&nbsp; <%= link_to 'Accept friend request',  accept(user), class: 'profile-link' %>
+          &nbsp;|&nbsp; <%= link_to 'Reject friend request',  reject(user), class: 'profile-link' %>
       <% elsif who_to_add(user) && not_pending(user) %>
           &nbsp;|&nbsp; <%= link_to 'Invite to friendship',  users_path(user, friend_id: user.id), class: 'profile-link' %>
       <% end %>
