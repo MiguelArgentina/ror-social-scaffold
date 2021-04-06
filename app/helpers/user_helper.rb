@@ -29,4 +29,9 @@ module UserHelper
   def all_friends
     current_user.friends.count
   end
+
+  def a_rejected(user)
+    rejected_requests = Friendship.all.where(confirmed: false).where(friend_id: current_user.id).pluck(:user_id)
+    rejected_requests.include?(user.id)
+  end
 end

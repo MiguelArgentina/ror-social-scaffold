@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    create_friendship(params[:friend_id]) if !friend_id? && !confirm_friendship?
+    create_friendship(params[:friend_id]) if !friend_id? && before_request
     User.find(current_user.id).confirm_friend(User.find(params[:friend_id])) if confirm_friendship?
     User.find(current_user.id).reject_friend(User.find(params[:friend_id])) if reject_friendship?
   end
@@ -11,12 +11,10 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.ordered_by_most_recent
-    create_friendship(params[:friend_id]) if !friend_id? && !confirm_friendship?
+    create_friendship(params[:friend_id]) if !friend_id? && before_request
     User.find(current_user.id).confirm_friend(User.find(params[:friend_id])) if confirm_friendship?
     User.find(current_user.id).reject_friend(User.find(params[:friend_id])) if reject_friendship?
   end
-
-
 
   private
 
@@ -32,4 +30,8 @@ class UsersController < ApplicationController
     params[:confirm] == 'false'
   end
 
+  def before_request
+    params[:confirm].nil?
   end
+
+end
