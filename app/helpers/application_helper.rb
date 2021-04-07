@@ -15,4 +15,10 @@ module ApplicationHelper
       link_to('Like!', post_likes_path(post_id: post.id), method: :post)
     end
   end
+
+  def current_user_profile
+    content_tag(:div, class: 'menu-item') do
+      link_to('My Profile', current_user) if current_user
+    end
+  end
 end
