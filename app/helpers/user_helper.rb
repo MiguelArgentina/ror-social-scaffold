@@ -48,4 +48,26 @@ module UserHelper
     rejected_requests = Friendship.all.where(confirmed: false).where(friend_id: current_user.id).pluck(:user_id)
     rejected_requests.include?(user.id)
   end
+
+  def show_friendship_options (user)
+    if a_requested(user)
+      render partial: 'users/accept_reject_links', locals: { user: user }
+    elsif who_to_add(user) && not_pending(user)
+      render partial: 'users/invite_link', locals: { user: user }
+    end
+  end
+
+  def show_friendship_actions(user)
+    if a_requested(user)
+      render partial: 'users/friendship_action_button'
+    elsif who_to_add(user) && not_pending(user)
+      render partial: 'users/invite_link', locals: { user: user }
+    end
+  end
+
+  def a_whole_new_method_plus_a_parcial_instead_of_a_single_line_if(user)
+    if my_profile(@user)
+      render partial: 'users/partial_created_to_remove_only_one_if', locals: { user: user }
+    end
+  end
 end
