@@ -1,5 +1,4 @@
 module UserHelper
-
   def gravatar_for(user, size: 60)
     gravatar_id = Digest::MD5.hexdigest(user.email)
     user.update(gravatar_url: "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}") if user.gravatar_url.nil?
@@ -36,12 +35,13 @@ module UserHelper
     current_user.friend_requests.include?(user)
   end
 
-  def all_requests
-    current_user.friend_requests.count
+  def all_pending
+    rejected = Friendship.all.where(confirmed: false).where(friend_id: current_user.id).pluck(:user_id)
+    current_user.friend_requests.reject { |req| rejected.include?(req.id) }
   end
 
   def all_friends
-    current_user.friends.count
+    current_user.friends
   end
 
   def a_rejected(user)
@@ -49,25 +49,29 @@ module UserHelper
     rejected_requests.include?(user.id)
   end
 
-  def show_friendship_options (user)
+  def show_friendship_options(user)
     if a_requested(user)
-      render partial: 'users/accept_reject_links', locals: { user: user }
+      content_tag(:div) do
+        concat(link_to('Accept friend request', accept(user), class: 'd-block my-1 profile-link'))
+        concat(link_to('Reject friend request', reject(user), class: 'profile-link'))
+      end
     elsif who_to_add(user) && not_pending(user)
-      render partial: 'users/invite_link', locals: { user: user }
+      link_to('Invite to friendship', users_path(user, friend_id: user.id), class: 'd-block my-1 profile-link')
     end
   end
 
   def show_friendship_actions(user)
     if a_requested(user)
-      render partial: 'users/friendship_action_button'
+      content_tag(:div) do
+        concat((tag.p 'This user sent a friend request'))
+        concat((link_to('Actions', user_path(current_user), class: 'action btn btn-warning')))
+      end
     elsif who_to_add(user) && not_pending(user)
-      render partial: 'users/invite_link', locals: { user: user }
+      link_to('Invite to friendship', user_path(@user, friend_id: @user.id), class: 'action btn btn-secondary')
     end
   end
 
-  def a_whole_new_method_plus_a_parcial_instead_of_a_single_line_if(user)
-    if my_profile(@user)
-      render partial: 'users/partial_created_to_remove_only_one_if', locals: { user: user }
-    end
+  def user_profile(user)
+    render 'friendship' if my_profile(user)
   end
 end

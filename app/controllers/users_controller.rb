@@ -33,5 +33,4 @@ class UsersController < ApplicationController
   def before_request
     params[:confirm].nil?
   end
-
 end

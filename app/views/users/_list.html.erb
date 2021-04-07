@@ -1,0 +1,6 @@
+<div class="card-body">
+  <h6 class="card-title fw-bold">Requested from:</h6>
+  <p class="card-text"><%= request.name %> &bull; <%= request.email %></p>
+  <%= link_to 'Accept Request', accept(request), class: "btn btn-info" %>
+  <%= link_to 'Reject Request', reject(request), class: "btn btn-warning" %>
+</div>
