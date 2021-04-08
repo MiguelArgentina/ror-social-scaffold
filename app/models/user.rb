@@ -15,7 +15,6 @@ class User < ApplicationRecord
   # This method gets all the User's friends
   def friends
     friends_array = friendships.map { |friendship| friendship.friend if friendship.confirmed }
-    friends_array + inverse_friendships.map { |friendship| friendship.user if friendship.confirmed }
     friends_array.compact
   end
 
@@ -33,10 +32,18 @@ class User < ApplicationRecord
     friendship = inverse_friendships.find { |relation| relation.user == user }
     friendship.confirmed = true
     friendship.save
+
+    friendship = friendships.find { |relation| relation.friend == user }
+    friendship.confirmed = true
+    friendship.save
   end
 
   def reject_friend(user)
     friendship = inverse_friendships.find { |relation| relation.user_id == user.id }
+    friendship.confirmed = false
+    friendship.save
+
+    friendship = friendships.find { |relation| relation.friend_id == user.id }
     friendship.confirmed = false
     friendship.save
   end

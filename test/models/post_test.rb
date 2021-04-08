@@ -2,10 +2,10 @@ require 'test_helper'
 
 class PostsTest < ActiveSupport::TestCase
   setup do
-    @user = users(:test_user_1)
+    @user = users(:testuser1)
     @post = Post.new(user_id: @user.id, content: 'My test content')
   end
-  
+
   test 'content of a post must be present' do
     @post.content = '  '
     assert_not @post.save

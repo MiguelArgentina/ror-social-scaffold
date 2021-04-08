@@ -8,7 +8,8 @@ module UserHelper
   def create_friendship(friend_id)
     user = User.find_by('id = ?', current_user.id)
     friend = User.find_by('id = ?', friend_id)
-    Friendship.create(user: user, friend: friend) unless friend_id.nil?
+    Friendship.create(creator: user.id, user: user, friend: friend) unless friend_id.nil?
+    Friendship.create(creator: user.id, user: friend, friend: user) unless friend_id.nil?
   end
 
   def accept(user)
@@ -31,6 +32,12 @@ module UserHelper
     current_user.name == user.name
   end
 
+  def created_request_for?(user)
+    Friendship.where(creator: current_user.id).pluck(:friend_id).reject do |req|
+      req == current_user.id
+    end.include?(user.id)
+  end
+
   def a_requested(user)
     current_user.friend_requests.include?(user)
   end
@@ -50,7 +57,7 @@ module UserHelper
   end
 
   def show_friendship_options(user)
-    if a_requested(user)
+    if a_requested(user) and !created_request_for?(user)
       content_tag(:div) do
         concat(link_to('Accept friend request', accept(user), class: 'd-block my-1 profile-link'))
         concat(link_to('Reject friend request', reject(user), class: 'profile-link'))
@@ -61,10 +68,10 @@ module UserHelper
   end
 
   def show_friendship_actions(user)
-    if a_requested(user)
+    if a_requested(user) and !created_request_for?(user)
       content_tag(:div) do
         concat((tag.p 'This user sent a friend request'))
-        concat((link_to('Actions', user_path(current_user), class: 'action btn btn-warning')))
+        concat(link_to('Actions', user_path(current_user), class: 'action btn btn-warning'))
       end
     elsif who_to_add(user) && not_pending(user)
       link_to('Invite to friendship', user_path(@user, friend_id: @user.id), class: 'action btn btn-secondary')
