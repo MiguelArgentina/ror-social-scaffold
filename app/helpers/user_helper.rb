@@ -71,7 +71,7 @@ module UserHelper
     if a_requested(user) and !created_request_for?(user)
       content_tag(:div) do
         concat((tag.p 'This user sent a friend request'))
-        concat((link_to('Actions', user_path(current_user), class: 'action btn btn-warning')))
+        concat(link_to('Actions', user_path(current_user), class: 'action btn btn-warning'))
       end
     elsif who_to_add(user) && not_pending(user)
       link_to('Invite to friendship', user_path(@user, friend_id: @user.id), class: 'action btn btn-secondary')
