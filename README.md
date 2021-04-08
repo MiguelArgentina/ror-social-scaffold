@@ -1,9 +1,6 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# Scaffold for social media app with Ruby on Rails
-
-> This repo includes initial code for social media app with basic styling. Its purpose is to be a starting point for Microverse students.
-
+## Project: Social Media Website
 ## Built With
 
 - Ruby 3.0.
@@ -11,7 +8,7 @@
 
 ## Live Demo
 
-TBA
+Visit the [social media website](https://socialwebsiterailsapp.herokuapp.com/)
 
 ## Prerequisites
 - Ruby 3.0.
@@ -47,15 +44,7 @@ Open `http://localhost:3000/` in your browser.
 
 ### Run tests
 
-```
-    rpsec --format documentation
-```
-
-> Tests will be added by Microverse students. There are no tests for initial features in order to make sure that students write all tests from scratch.
-
-### Deployment
-
-TBA
+Run rails test from the command line to run all the tests
 
 ## Authors
 
