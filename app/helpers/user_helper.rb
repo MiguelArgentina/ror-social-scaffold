@@ -33,13 +33,14 @@ module UserHelper
   end
 
   def created_request_for?(user)
-    Friendship.where(creator: current_user.id).pluck(:friend_id).reject { |req| req == current_user.id }.include?(user.id)
+    Friendship.where(creator: current_user.id).pluck(:friend_id).reject do |req|
+      req == current_user.id
+    end.include?(user.id)
   end
 
   def a_requested(user)
     current_user.friend_requests.include?(user)
   end
-
 
   def all_pending
     rejected = Friendship.all.where(confirmed: false).where(friend_id: current_user.id).pluck(:user_id)

@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   setup do
-    @user = users(:test_user_1)
-    @user2 = users(:test_user_2)
+    @user = users(:testuser1)
+    @user2 = users(:testuser2)
   end
 
   def create_friendship(friend_id, current_user)
@@ -23,10 +23,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 
-
   test 'a friend accepts a request' do
     create_friendship(@user2.id, @user)
     assert true
   end
-
 end

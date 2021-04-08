@@ -5,14 +5,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     get '/users/sign_in'
-    sign_in users(:test_user_1)
+    sign_in users(:testuser1)
     post user_session_url
 
     # If you want to test that things are working correctly, uncomment this below:
     # follow_redirect!
     # assert_response :success
   end
-
 
   test 'should get index after signing in' do
     get root_path
@@ -27,11 +26,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', destroy_user_session_path
   end
 
-
   test 'should get redirected to sign-in if trying to access the posts' do
-    sign_out users(:test_user_1)
+    sign_out users(:testuser1)
     get posts_path
     assert_redirected_to new_user_session_path
   end
-
 end
