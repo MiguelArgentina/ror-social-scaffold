@@ -33,10 +33,18 @@ class User < ApplicationRecord
     friendship = inverse_friendships.find { |relation| relation.user == user }
     friendship.confirmed = true
     friendship.save
+
+    friendship = friendships.find { |relation| relation.friend == user }
+    friendship.confirmed = true
+    friendship.save
   end
 
   def reject_friend(user)
     friendship = inverse_friendships.find { |relation| relation.user_id == user.id }
+    friendship.confirmed = false
+    friendship.save
+
+    friendship = friendships.find { |relation| relation.friend_id == user.id }
     friendship.confirmed = false
     friendship.save
   end
