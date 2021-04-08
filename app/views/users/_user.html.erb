@@ -1,7 +1,16 @@
 <li class='d-flex align-items-center'>
   <%= gravatar_for user %>
-  Name: <%= user.name %><br>
-  <span class="ms-2 mb-0 profile-link">
-    <%= link_to 'See Profile',  user_path(user), class: 'profile-link' %>
+  <h3 class='fs-6'>
+    <span class='fw-normal'>Name:</span><br><%= user.name %>
+  </h3>
+
+  <span class="ms-4 mb-0 profile-link">
+
+    <%= link_to 'See Profile', user_path(user), class: 'profile-link' %>
+
+    <% unless a_rejected(user) %>
+     <%= show_friendship_options(user) %>
+    <% end %>
   </span>
 </li>
+

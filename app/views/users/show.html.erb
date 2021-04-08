@@ -3,10 +3,16 @@
     <%= gravatar_for @user %>
     <%= "Name: #{@user.name}" %>
   </h2>
+
+  <%= show_friendship_actions(@user) %>
+
   <article class="timeline">
     <h3>Recent posts:</h3>
     <ul class="posts">
       <%= render @posts %>
     </ul>
   </article>
+
+  <%= user_profile(@user) %>
+
 </section>

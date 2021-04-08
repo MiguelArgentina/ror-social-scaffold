@@ -1,0 +1,22 @@
+<div class="card mb-3">
+  <h5 class="card-header">
+      Pending friendship invitations: <%= all_pending.count %>
+  </h5>
+
+  <% all_pending.each do |request| %>
+    <%= render 'list', request: request %>
+  <% end %>
+</div>
+
+<div class="card">
+  <h5 class="card-header">
+    My Friends: <%= all_friends.count %>
+  </h5>
+
+  <% all_friends.each do |friend| %>
+    <div class="card-body">
+      <h6 class="card-title fw-bold">Name</h6>
+      <p class="card-text"><%= friend.name %></p>
+    </div>
+  <% end %>
+</div>
