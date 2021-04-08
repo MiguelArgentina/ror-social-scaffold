@@ -8,7 +8,8 @@ module UserHelper
   def create_friendship(friend_id)
     user = User.find_by('id = ?', current_user.id)
     friend = User.find_by('id = ?', friend_id)
-    Friendship.create(user: user, friend: friend) unless friend_id.nil?
+    Friendship.create(creator: user.id, user: user, friend: friend) unless friend_id.nil?
+    Friendship.create(creator: user.id, user: friend, friend: user) unless friend_id.nil?
   end
 
   def accept(user)
@@ -31,8 +32,9 @@ module UserHelper
     current_user.name == user.name
   end
 
+#This is the funtion that needs to be updated
   def a_requested(user)
-    current_user.friend_requests.include?(user)
+    current_user.friend_requests.where(["creator != '%i'",current_user.id]).include?(user)
   end
 
   def all_pending
